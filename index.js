@@ -47,6 +47,8 @@ const displayPhones = (phones, dataLimit) => {
                             <h5 class="card-title">${phone.phone_name}</h5>
                             <p class="card-text">This is a longer card with supporting text below as a natural lead-in
                                 to additional content. This content is a little bit longer.</p>
+                                <!-- Button trigger modal -->
+                            <button onclick="loadPhoneDetails('${phone.slug}')" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneModal">Details</button>
                         </div>
                 </div>
 
@@ -76,6 +78,13 @@ document.getElementById('search-btn').addEventListener('click', function () {
     processData(10);
 })
 
+//enter press for search input area
+
+document.getElementById('input-field').addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        processData(10);
+    }
+});
 
 //function for start loader or spinner
 
@@ -90,9 +99,37 @@ const toggleSpinner = isLoading => {
     }
 }
 
+//show all btn data loading
+
 document.getElementById('btn-show-all').addEventListener('click', function () {
     processData();
 })
+
+//load phone details in modal
+const loadPhoneDetails = async (id) => {
+    const url = `https://openapi.programming-hero.com/api/phone/${id}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    displayPhoneDetails(data.data);
+}
+
+const displayPhoneDetails = phone => {
+    //console.log(phone);
+    const modalTitle = document.getElementById('phoneModalLabel')
+    modalTitle.innerText = phone.name;
+
+    const phoneDetails = document.getElementById('phone-details');
+    phoneDetails.innerHTML = ` 
+                <p>Release Date: ${phone.releaseDate ? phone.releaseDate : 'No release date found'} </p>
+                <p>BlueTooth: ${phone.others ? phone.others.Bluetooth : 'No Bluetooth information found'} </p>
+                <p>GPS: ${phone.others ? phone.others.GPS : 'No GPS information found'} </p>
+                <p>WLAN: ${phone.others ? phone.others.WLAN : 'No WLAN information found'} </p>
+
+`;
+}
+
+
+
 
 //loadPhones('iphone');
 
