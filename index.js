@@ -11,6 +11,22 @@ const displayPhones = phones => {
 
     phonesContainer.innerText = '';
 
+    //display 10 phones only by slice
+    phones = phones.slice(0, 10);
+
+    //display no phone found message
+    const noPhone = document.getElementById('no-phone-found-message');
+
+    if (phones.length === 0) {
+        noPhone.classList.remove('d-none');
+    }
+    else {
+        noPhone.classList.add('d-none');
+    }
+
+
+
+    //display all phones
     phones.forEach(phone => {
         // console.log(phone)
         const phoneDiv = document.createElement('div');
@@ -41,4 +57,5 @@ document.getElementById('search-btn').addEventListener('click', function () {
 
 
 
-loadPhones();
+//loadPhones();
+
